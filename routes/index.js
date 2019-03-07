@@ -13,9 +13,12 @@ router.post('/pdf-worker', cors() ,async (req,res,next) => {
     const dataBlob = convertToBinary(req.body.result);
     const pdfInfo = await PDFJS.getDocument(dataBlob);
     const cleanPdfInfo = util.inspect(pdfInfo);
+    console.log(JSON.stringify(cleanPdfInfo));
     res.send(JSON.stringify(cleanPdfInfo));
-  } catch(e){
+    // res.send("OKAY THEN");
+  } catch(e){    
     console.log(e.message);
+    next(e);
   }
 });
 
