@@ -11,10 +11,11 @@ router.get('/', (req,res,next) => {res.send("This can't be right. You should be 
 router.post('/pdf-worker', cors() ,async (req,res,next) => {  
   try {
     const dataBlob = convertToBinary(req.body.result);
-    const pdfInfo = await PDFJS.getDocument(dataBlob);
-    const cleanPdfInfo = util.inspect(pdfInfo);
-    console.log(JSON.stringify(cleanPdfInfo));
-    res.send(JSON.stringify(cleanPdfInfo));
+    const docInfo = await PDFJS.getDocument(dataBlob);
+    const { numPages, encrypted } = docInfo.pdfInfo;
+    const objToSend = { numPages, encrypted }
+    // const cleanPdfInfo = util.inspect(pdfInfo);
+    res.send(objToSend);
     // res.send("OKAY THEN");
   } catch(e){    
     console.log(e.message);
